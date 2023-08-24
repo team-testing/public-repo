@@ -1,0 +1,1417 @@
+{
+    "openapi": "3.0.0",
+    "paths": {
+        "/offer": {
+            "get": {
+                "operationId": "getAllOffers",
+                "summary": "Get all offers",
+                "description": "Retrieves all accessible PrimaryBid offers.",
+                "parameters": [
+                    {
+                        "name": "modifiedAfter",
+                        "required": false,
+                        "in": "query",
+                        "example": "2020-09-01T12:00:00Z",
+                        "description": "When specified, only return Offers modified on or after this iso_datetime (aka ISO 8601 format “1994-11-05T13:15:30Z”), where:\n                                <ul> \n                                    <li>“T” separates the day (YYYY-MM-DD) from the time (HH:MM:SS).</li>\n                                    <li>”Z” represents the Coordinated Universal Time (UTC).</li>\n                                </ul>\n                            Use of modifiedAfter URI query parameter is the recommended method to poll for the presence of new Offers.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "required": false,
+                        "in": "query",
+                        "example": 20,
+                        "description": "When specified, it refers to the maximum number of offers that should be returned in a single API response. <br/><br/> \n                    For example, if you set the field limit to 10, the API will return a maximum of 10 offers in the response. <br/><br/>\n                    Together with the field <b>offset</b> allows retrieving a smaller subset of offers, enabling pagination. \n                    By adjusting both the <b>offset</b> and <b>limit</b> values, you can navigate through the complete list of offers in smaller, manageable portions.",
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "required": false,
+                        "in": "query",
+                        "example": 10,
+                        "description": "When specified, determines the starting point from which the API should begin returning offers. \n                    It is used in conjunction with the field limit to implement pagination. \n                    By specifying an offset value, you can retrieve different sets of items in subsequent API calls.  <br/><br/>\n                    For example, if you set the field offset to 20 and the field limit to 10, the API will return offers starting from the 21st up to the 30th item.",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "(Click to see more)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/OfferModel"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorModel"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Offers"
+                ]
+            }
+        },
+        "/offer/{offerId}": {
+            "get": {
+                "operationId": "getOfferById",
+                "summary": "Get an offer by its identifier",
+                "parameters": [
+                    {
+                        "name": "offerId",
+                        "required": true,
+                        "in": "path",
+                        "description": "The identifier of the offer to be retrieved",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "(Click to see more)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OfferModel"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "(Click to see more)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorModel"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No offer found matching identifier"
+                    }
+                },
+                "tags": [
+                    "Offers"
+                ]
+            }
+        },
+        "/allocation": {
+            "get": {
+                "operationId": "getAllAllocations",
+                "summary": "Get all allocations",
+                "description": "Retrieves all accessible PrimaryBid allocations.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "(Click to see more)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/OfferAllocationModel"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorModel"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Allocations"
+                ]
+            }
+        },
+        "/allocation/{offerId}": {
+            "get": {
+                "operationId": "getAllocationsByOfferById",
+                "summary": "Get allocations for offer",
+                "description": "Retrieves allocations for a specific offer.",
+                "parameters": [
+                    {
+                        "name": "offerId",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "required": false,
+                        "in": "query",
+                        "example": 20,
+                        "description": "When specified, determines the starting point from which the API should begin returning allocations. It is used in conjunction with the field limit to implement pagination. By specifying an offset value, you can retrieve different sets of allocations in subsequent API calls. For example, if you set the field offset to 20 and the field limit to 10, the API will return allocations starting from the 21st up to the 30th item.",
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "required": false,
+                        "in": "query",
+                        "example": 10,
+                        "description": "When specified, it refers to the maximum number of allocations that should be returned in a single API response. <br /><br />\n                            For example, if you set the field limit to 10, the API will return a maximum of 10 allocations in the response. <br /><br />\n                            Together with the field <b>offset</b> allows retrieving a smaller subset of allocations, enabling pagination. By adjusting both the <b>offset</b> and <b>limit</b> values, you can navigate through the complete list of allocations in smaller, manageable portions. ",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "(Click to see more)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OfferAllocationModel"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorModel"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Allocations"
+                ]
+            }
+        },
+        "/subscription": {
+            "get": {
+                "operationId": "getAllSubscriptions",
+                "summary": "Get all subscriptions",
+                "description": "Retrieves all accessible PrimaryBid subscriptions.",
+                "parameters": [
+                    {
+                        "name": "offerId",
+                        "required": false,
+                        "in": "query",
+                        "example": "8ecd493a-562f-45b3-b1a5-4d05d3eb5f2c",
+                        "description": "When specified, only returns subscriptions placed on a specific offer id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "required": false,
+                        "in": "query",
+                        "example": 20,
+                        "description": "When specified, determines the starting point from which the API should begin returning subscriptions. It is used in conjunction with the field limit to implement pagination. By specifying an offset value, you can retrieve different sets of subscriptions in subsequent API calls. For example, if you set the field offset to 20 and the field limit to 10, the API will return subscriptions starting from the 21st up to the 30th item.",
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "required": false,
+                        "in": "query",
+                        "example": 10,
+                        "description": "When specified, it refers to the maximum number of subscriptions that should be returned in a single API response.  <br /><br />\n        For example, if you set the field limit to 10, the API will return a maximum of 10 subscriptions in the response. <br /><br />\n        Together with the field <b>offset</b> allows retrieving a smaller subset of subscriptions, enabling pagination. By adjusting both the <b>offset</b> and <b>limit</b> values, you can navigate through the complete list of subscriptions in smaller, manageable portions. ",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "(Click to see more)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/SubscriptionModel"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Subscriptions"
+                ]
+            },
+            "post": {
+                "operationId": "addSubscription",
+                "summary": "Create a new subscription",
+                "description": "Creates a new subscription.\n\nNote: Calling the POST/subscription endpoint several times, with identical request bodies, creates multiple records. To prevent data duplication, we suggest setting up some rules at your end.",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SubscriptionInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "(Click to see more)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SubscriptionModel"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponseModel"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Subscriptions"
+                ]
+            }
+        },
+        "/subscription/{subscriptionId}": {
+            "get": {
+                "operationId": "getSubscriptionById",
+                "summary": "Get specific subscription",
+                "description": "Gets a subscription by its identifier.",
+                "parameters": [
+                    {
+                        "name": "subscriptionId",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "(Click to see more)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SubscriptionModel"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Subscriptions"
+                ]
+            }
+        },
+        "/subscription/{subscriptionId}/cancel": {
+            "put": {
+                "operationId": "cancelSubscription",
+                "summary": "Cancel a subscription",
+                "description": "Cancels a subscription by its identifier.",
+                "parameters": [
+                    {
+                        "name": "subscriptionId",
+                        "required": true,
+                        "in": "path",
+                        "allowEmptyValue": false,
+                        "description": "The identifier of the subscription to cancel",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponseModel"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Subscriptions"
+                ]
+            }
+        },
+        "/healthcheck": {
+            "get": {
+                "operationId": "healthcheck",
+                "summary": "Get healthcheck status",
+                "description": "Retrieves status and availability of the API.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "The Health Check is successful.(Click to see more)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "info": {
+                                            "type": "object",
+                                            "example": {
+                                                "database": {
+                                                    "status": "up"
+                                                }
+                                            },
+                                            "additionalProperties": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "status": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "additionalProperties": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "nullable": true
+                                        },
+                                        "error": {
+                                            "type": "object",
+                                            "example": {},
+                                            "additionalProperties": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "status": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "additionalProperties": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "nullable": true
+                                        },
+                                        "details": {
+                                            "type": "object",
+                                            "example": {
+                                                "database": {
+                                                    "status": "up"
+                                                }
+                                            },
+                                            "additionalProperties": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "status": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "additionalProperties": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "503": {
+                        "description": "The Health Check is not successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "info": {
+                                            "type": "object",
+                                            "example": {
+                                                "database": {
+                                                    "status": "up"
+                                                }
+                                            },
+                                            "additionalProperties": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "status": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "additionalProperties": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "nullable": true
+                                        },
+                                        "error": {
+                                            "type": "object",
+                                            "example": {
+                                                "redis": {
+                                                    "status": "down",
+                                                    "message": "Could not connect"
+                                                }
+                                            },
+                                            "additionalProperties": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "status": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "additionalProperties": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "nullable": true
+                                        },
+                                        "details": {
+                                            "type": "object",
+                                            "example": {
+                                                "database": {
+                                                    "status": "up"
+                                                },
+                                                "redis": {
+                                                    "status": "down",
+                                                    "message": "Could not connect"
+                                                }
+                                            },
+                                            "additionalProperties": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "status": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "additionalProperties": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Healthcheck"
+                ]
+            }
+        }
+    },
+    "info": {
+        "title": "PrimaryBid Commercial API",
+        "description": "PrimaryBid Commercial Integrations API",
+        "version": "2.0",
+        "contact": {}
+    },
+    "x-readme": {
+        "explorer-enabled": false,
+        "proxy-enabled": true,
+        "samples-enabled": true
+    },
+    "tags": [],
+    "servers": [
+        {
+            "url": "https://api.primarybid.com",
+            "description": "Production Server"
+        },
+        {
+            "url": "https://stagingapi.primarybid.com",
+            "description": "Staging Server"
+        },
+        {
+            "url": "https://api.primarybid.fr",
+            "description": "Production Server (SA)"
+        },
+        {
+            "url": "https://stagingapi.primarybid.fr",
+            "description": "Staging Server (SA)"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "primary-bid-api-subscription": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "primary-bid-api-subscription"
+            },
+            "primary-bid-api-secret": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "primary-bid-api-secret"
+            }
+        },
+        "schemas": {
+            "OfferDocumentsModel": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Additional document offer title"
+                    },
+                    "documentUrl": {
+                        "type": "string",
+                        "description": "Additional document link"
+                    }
+                },
+                "required": [
+                    "title",
+                    "documentUrl"
+                ]
+            },
+            "OfferDetailModel": {
+                "type": "object",
+                "properties": {
+                    "countryCode": {
+                        "type": "string",
+                        "description": "The country in which the offer is being marketed by PrimaryBid",
+                        "example": "GB",
+                        "enum": [
+                            "GB",
+                            "FR",
+                            "NL",
+                            "BE",
+                            "DE",
+                            "US"
+                        ]
+                    },
+                    "estTargetRaise": {
+                        "type": "number",
+                        "description": "The estimated amount that the issuer is looking to raise through the offering. "
+                    },
+                    "minTargetRaiseCombined": {
+                        "type": "number",
+                        "description": "Minimum target raise when subType is mixed."
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "The current status of the offer e.g. open_for_subscription",
+                        "example": "open_for_subscription",
+                        "enum": [
+                            "open_for_subscription",
+                            "closed_for_subscription"
+                        ]
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "ipo",
+                            "follow_on"
+                        ],
+                        "deprecated": true
+                    },
+                    "subType": {
+                        "type": "string",
+                        "description": "The sub-type of the offer e.g. capital_increase",
+                        "enum": [
+                            "primary",
+                            "secondary",
+                            "mixed"
+                        ],
+                        "example": "primary",
+                        "deprecated": true
+                    },
+                    "pressReleaseLink": {
+                        "type": "string",
+                        "description": "An HTTP URL link which contains the public regulatory news article describing the Offer."
+                    },
+                    "landingPageLink": {
+                        "type": "string",
+                        "description": "The URL to the PrimaryBid community offerings microsite.",
+                        "example": "https://backmarket.primarybid"
+                    },
+                    "membershipRequired": {
+                        "type": "string",
+                        "description": "Does this offer incorporate a community aspect that requires membership validation upon subscription?",
+                        "enum": [
+                            "no",
+                            "yes",
+                            "optional"
+                        ],
+                        "example": "Optional"
+                    },
+                    "offeringDocuments": {
+                        "description": "A series of documents about the offering, listed as an array of [title, documentUrl] value pairs.",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/OfferDocumentsModel"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "countryCode",
+                    "status",
+                    "type",
+                    "pressReleaseLink",
+                    "membershipRequired",
+                    "offeringDocuments"
+                ]
+            },
+            "OfferTextModel": {
+                "type": "object",
+                "properties": {
+                    "legalDisclaimer": {
+                        "type": "string",
+                        "description": "Legal disclaimer text that is specific to an offer."
+                    },
+                    "specialInstruction": {
+                        "type": "string",
+                        "description": "Free format text to add any special instructions related specifically to the offer."
+                    },
+                    "restriction": {
+                        "type": "string",
+                        "description": "Text around whether there are any specific restrictions on who can participate in an offer"
+                    },
+                    "offerDiscount": {
+                        "type": "string",
+                        "description": "Free format offer specific text around the discount."
+                    },
+                    "priceless": {
+                        "type": "string",
+                        "description": "Free format offer specific text around when an offer has no price."
+                    },
+                    "useOfProceeds": {
+                        "type": "string",
+                        "description": "Text around the use of proceeds i.e. the use to which the issuer will put the funds raised."
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "PrimaryBid offer title"
+                    },
+                    "companyAnnouncements": {
+                        "type": "string",
+                        "description": "Free format description of Offer from Issuer."
+                    },
+                    "keyInformation": {
+                        "type": "string",
+                        "description": "Critical details relevant to the offer, such as specifics of the deal (e.g. if a bond is priced at a premium or if there is a price guidance)."
+                    }
+                }
+            },
+            "OfferPricingAndOrderLimitsModel": {
+                "type": "object",
+                "properties": {
+                    "priceType": {
+                        "type": "string",
+                        "enum": [
+                            "fixed",
+                            "no_price",
+                            "range"
+                        ]
+                    },
+                    "offerPrice": {
+                        "type": "number",
+                        "description": "To specify a fixed price for the offer. Only applicable if priceType is fixed"
+                    },
+                    "minimumPrice": {
+                        "type": "number",
+                        "description": "To specify a minimum price for the offer. Only applicable if priceType is range"
+                    },
+                    "maximumPrice": {
+                        "type": "number",
+                        "description": "To specify a maximum price for the offer. Only applicable if priceType is range"
+                    },
+                    "discountFrom": {
+                        "type": "number",
+                        "description": "To specify a minimum discount for the offer. Only applicable if priceType is range"
+                    },
+                    "discountTo": {
+                        "type": "number",
+                        "description": "To specify a maximum discount for the offer. Only applicable if priceType is range"
+                    },
+                    "discount": {
+                        "type": "number",
+                        "description": "To specify a discount for the offer. Only applicable if priceType is fixed"
+                    },
+                    "currency": {
+                        "type": "string",
+                        "description": "The currency in which the price is quoted",
+                        "enum": [
+                            "GBP",
+                            "EUR",
+                            "USD"
+                        ],
+                        "deprecated": true
+                    },
+                    "hardMaxLimit": {
+                        "type": "number",
+                        "description": "The hard limit - maximum amount of shares that can be subscribed"
+                    },
+                    "hardMinLimit": {
+                        "type": "number",
+                        "description": "A hard minimum order size when specified for the offer"
+                    },
+                    "acceptedCurrency": {
+                        "type": "string",
+                        "enum": [
+                            "GBP",
+                            "EUR",
+                            "USD"
+                        ],
+                        "description": "The currency required to participate in the offering, expressed in the ISO 4217 3-letter standard."
+                    }
+                },
+                "required": [
+                    "priceType",
+                    "acceptedCurrency"
+                ]
+            },
+            "OfferDatesModel": {
+                "type": "object",
+                "properties": {
+                    "offerStartDateTime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "description": "The exact start time of the offer. This represents the time that the offerStatus is open_for_subs"
+                    },
+                    "offerEndDateTime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "description": "The exact end time of the offer. This represents the time that the offerStatus is closed_for_subs."
+                    },
+                    "offerEarlyClose": {
+                        "format": "date-time",
+                        "type": "string",
+                        "description": "The early close time of the offer. This represents the time that the offerStatus is closed_for_subs early."
+                    },
+                    "lastModifiedOn": {
+                        "format": "date-time",
+                        "type": "string",
+                        "description": "The exact update time of the offer's modification. This represents the time that the offer has been modified."
+                    },
+                    "admissionDateTime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "description": "The approximate date and time the shares were admitted to the exchange, in the ISO 8601 format (“2023-06-06T13:36:45.044Z”), where:\n\n● “T” separates the day (YYYY-MM-DD) from the time (HH:MM:SS).\n\n● ”Z” stands for Coordinated Universal Time (UTC).",
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "offerStartDateTime",
+                    "offerEndDateTime",
+                    "lastModifiedOn"
+                ]
+            },
+            "OfferIssuerModel": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "PrimaryBid ID of issuer (internal)."
+                    },
+                    "companyName": {
+                        "type": "string",
+                        "description": "The name of the issuer"
+                    },
+                    "businessDescriptionText": {
+                        "type": "string",
+                        "description": "A description of the company"
+                    },
+                    "sector": {
+                        "type": "string",
+                        "description": "A more granular breakdown of the sector in which the issuer operates."
+                    },
+                    "ticker": {
+                        "type": "string",
+                        "description": "Stock Exchange Ticker (as per exchangeMic)"
+                    },
+                    "exchangeMic": {
+                        "type": "string",
+                        "description": "The MIC of the exchange on which the shares will be listed."
+                    },
+                    "sellerName": {
+                        "type": "string",
+                        "description": "Used when it is not the issuer that is selling the shares but a major existing shareholder. For example a private equity firm or large fund. Present when the subType is secondary or mixed"
+                    },
+                    "fttRequired": {
+                        "type": "boolean",
+                        "description": "Only required if countryCode is FR. The tax is payable when the issuer is a large cap and the subType is secondary."
+                    },
+                    "securityIdentifier": {
+                        "type": "string",
+                        "description": "Identifier of Security (usually an ISIN)"
+                    }
+                },
+                "required": [
+                    "id",
+                    "companyName",
+                    "sector",
+                    "ticker",
+                    "exchangeMic"
+                ]
+            },
+            "OfferModel": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "offerType": {
+                        "type": "string",
+                        "description": "The type of public offering used to raise funds.",
+                        "example": "ipo",
+                        "enum": [
+                            "primary_placing",
+                            "secondary_placing",
+                            "fixed_income",
+                            "ipo"
+                        ]
+                    },
+                    "offerSubType": {
+                        "type": "string",
+                        "description": "The subtype of the offer launched to raise capital.",
+                        "example": "company_placing",
+                        "enum": [
+                            "company_placing",
+                            "investment_trust",
+                            "blocks",
+                            "company_ipo",
+                            "investment_trust_ipo",
+                            "spac_ipo",
+                            "de_spac_ipo",
+                            "re_ipo",
+                            "corporate_bond",
+                            "government_bond"
+                        ]
+                    },
+                    "details": {
+                        "$ref": "#/components/schemas/OfferDetailModel"
+                    },
+                    "textProperties": {
+                        "$ref": "#/components/schemas/OfferTextModel"
+                    },
+                    "pricingAndOrderLimits": {
+                        "$ref": "#/components/schemas/OfferPricingAndOrderLimitsModel"
+                    },
+                    "dates": {
+                        "$ref": "#/components/schemas/OfferDatesModel"
+                    },
+                    "issuer": {
+                        "$ref": "#/components/schemas/OfferIssuerModel"
+                    }
+                },
+                "required": [
+                    "id",
+                    "offerType",
+                    "offerSubType",
+                    "details",
+                    "textProperties",
+                    "pricingAndOrderLimits",
+                    "dates",
+                    "issuer"
+                ]
+            },
+            "ApiErrorModel": {
+                "type": "object",
+                "properties": {
+                    "error": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "validationErrors": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [
+                    "error",
+                    "message"
+                ]
+            },
+            "OfferAllocationDetailModel": {
+                "type": "object",
+                "properties": {
+                    "subscriptionId": {
+                        "type": "string",
+                        "description": "PrimaryBid subscription ID"
+                    },
+                    "clientSubscriptionReference": {
+                        "type": "string",
+                        "description": "Client subscription reference"
+                    },
+                    "investorReferenceType": {
+                        "type": "string",
+                        "description": "Describes the form of the investor reference. nino (National Insurance Number), lei (Legal Entity Identifier), identity_card_number (identification card number), passport_number (passport number), concat (MiFID II investor identifier)",
+                        "enum": [
+                            "nino",
+                            "lei",
+                            "identity_card_number",
+                            "passport_number",
+                            "concat"
+                        ],
+                        "deprecated": true
+                    },
+                    "investorReference": {
+                        "type": "string",
+                        "description": "Subscription investor reference as per investorReferenceType",
+                        "deprecated": true
+                    },
+                    "receivedByPrimaryBidTimestamp": {
+                        "format": "date-time",
+                        "type": "string",
+                        "description": "The timestamp PrimaryBid received the subscription"
+                    },
+                    "amountRequested": {
+                        "type": "number",
+                        "description": "The cash amount the investor subscribed"
+                    },
+                    "currency": {
+                        "type": "string",
+                        "description": "Currency code of amount the investor subscribed",
+                        "enum": [
+                            "GBP",
+                            "EUR",
+                            "USD"
+                        ]
+                    },
+                    "amountAccepted": {
+                        "type": "number",
+                        "description": "The cash amount allocated. This can be less that that requested if the issuer imposes a limit and/or allocation scaleback"
+                    },
+                    "amountAllocated": {
+                        "type": "number",
+                        "description": "The cash amount allocated. This can be less that that requested if the issuer imposes a limit and/or allocation scaleback"
+                    },
+                    "sharesAllocated": {
+                        "type": "number",
+                        "description": "The number of shares allocated as per amountAllocated"
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "Optional supporting allocation message"
+                    },
+                    "clientSubscriptionTimestamp": {
+                        "format": "date-time",
+                        "type": "string",
+                        "description": "The timestamp that the order is received by the API client's client. "
+                    },
+                    "accepted": {
+                        "type": "boolean",
+                        "description": "Whether the subscription was accepted or not"
+                    },
+                    "membershipCode": {
+                        "type": "string",
+                        "description": "The access code for community offerings. Investors should have received it from the issuer."
+                    },
+                    "accountType": {
+                        "type": "string",
+                        "enum": [
+                            "general_investment",
+                            "tax_efficient"
+                        ],
+                        "description": "The financial account category used to fund this subscription. Can be either a general investment account or a tax-efficient account."
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "unallocated",
+                            "aborted",
+                            "committed",
+                            "allocated",
+                            "pending"
+                        ],
+                        "description": "Information regarding a logged allocation. Status can be either unallocated, committed, allocated or aborted."
+                    },
+                    "membershipStatus": {
+                        "type": "string",
+                        "description": "When a subscription to a community offering is accepted, PrimaryBid validates the membership code and returns its status which can be either verified or unverified. ",
+                        "enum": [
+                            "verified",
+                            "unverified"
+                        ]
+                    },
+                    "subscriptionCategory": {
+                        "type": "string",
+                        "description": "The type of investment based on the profile of the investor:\n\n● Retail - demand is coming from a private, unqualified investor;\n\n● Professional - demand is coming from a certified investor;\n\n● Institutional - demand is coming from a corporate investor.",
+                        "enum": [
+                            "retail",
+                            "professional",
+                            "ecp/institutional"
+                        ]
+                    }
+                },
+                "required": [
+                    "subscriptionId",
+                    "receivedByPrimaryBidTimestamp",
+                    "amountRequested",
+                    "currency",
+                    "amountAccepted",
+                    "amountAllocated",
+                    "sharesAllocated",
+                    "clientSubscriptionTimestamp",
+                    "accepted",
+                    "status",
+                    "membershipStatus"
+                ]
+            },
+            "OfferAllocationModel": {
+                "type": "object",
+                "properties": {
+                    "offerId": {
+                        "type": "string",
+                        "description": "The id of the Offer"
+                    },
+                    "price": {
+                        "type": "number",
+                        "description": "Final price for the Offer"
+                    },
+                    "priceCurrency": {
+                        "type": "string",
+                        "description": "Final price currency code",
+                        "enum": [
+                            "GBP",
+                            "EUR",
+                            "USD"
+                        ]
+                    },
+                    "allocationCount": {
+                        "type": "number",
+                        "description": "The number of allocated subscriptions granted by the issuer. Can be reconciled against the number of subscriptions submitted."
+                    },
+                    "allocations": {
+                        "description": "List of allocations for this Offer",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/OfferAllocationDetailModel"
+                        }
+                    }
+                },
+                "required": [
+                    "offerId",
+                    "price",
+                    "priceCurrency",
+                    "allocations"
+                ]
+            },
+            "SubscriptionModel": {
+                "type": "object",
+                "properties": {
+                    "subscriptionId": {
+                        "type": "string",
+                        "description": "A unique id generated by PrimaryBid for this subscription. Should a successful allocation occur, it would include this id."
+                    },
+                    "offerId": {
+                        "type": "string",
+                        "description": "Reference to Offer (returned from GET /offer)"
+                    },
+                    "amountRequested": {
+                        "type": "number",
+                        "description": "The cash amount of the subscription requested by the investor in the currency associated with the PrimaryBid API client. This amount should contain no more than 6 decimal places."
+                    },
+                    "clientSubscriptionReference": {
+                        "type": "string",
+                        "description": "A reference given to PrimaryBid by the API client so that they can tie the subscription back to their records. A unique subscriptionId is additionally generated by PrimaryBid."
+                    },
+                    "currency": {
+                        "type": "string",
+                        "description": "The currency of the cash amount of the subscription requested by the investor as per the currency associated with the PrimaryBid API client.",
+                        "enum": [
+                            "GBP",
+                            "EUR",
+                            "USD"
+                        ]
+                    },
+                    "investorReferenceType": {
+                        "type": "string",
+                        "description": "Describes the form of the investor reference. nino (National Insurance Number), lei (Legal Entity Identifier), identity_card_number (identification card number), passport_number (passport number), concat (MiFID II investor identifier)",
+                        "enum": [
+                            "nino",
+                            "lei",
+                            "identity_card_number",
+                            "passport_number",
+                            "concat",
+                            "ssn",
+                            "other"
+                        ],
+                        "deprecated": true
+                    },
+                    "investorReference": {
+                        "type": "string",
+                        "description": "Investor reference as per investorReferenceType",
+                        "deprecated": true
+                    },
+                    "subscriptionType": {
+                        "type": "string",
+                        "enum": [
+                            "xo_qualified",
+                            "xo_unqualified",
+                            "discretionary_qualified",
+                            "discretionary_unqualified",
+                            "institutional"
+                        ],
+                        "description": "Describes the type of investment based on the profile of the investor: xo_qualified (Execution-only, qualified investor), xo_unqualified (Execution-only, unqualified investor), discretionary_qualified (Discretionary investment, qualified investor), discretionary_unqualified (Discretionary investment, unqualified investor), institutional (Institutional investor)"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "accepted",
+                            "rejected",
+                            "cancelled"
+                        ],
+                        "description": "Information regarding a logged subscription. Status can be either accepted, rejected, or cancelled."
+                    },
+                    "clientSubscriptionTimestamp": {
+                        "format": "date-time",
+                        "type": "string",
+                        "description": "The timestamp when the order is received by the API client's client.\n\nUse the ISO 8601 format “1994-11-05T13:15:30Z”, where: \n\n● “T” separates the day (YYYY-MM-DD) from the time (HH:MM:SS).\n\n● ”Z” stands for the UTC standard."
+                    },
+                    "isExistingShareholder": {
+                        "type": "boolean",
+                        "description": "Is the investor an existing shareholder?"
+                    },
+                    "numExistingShares": {
+                        "type": "number",
+                        "description": "Number of shares investor currently holds"
+                    },
+                    "isIssuerEmployee": {
+                        "type": "boolean",
+                        "description": "Is the investor an employee of the issuer?"
+                    },
+                    "membershipCode": {
+                        "type": "string",
+                        "description": "The access code for community offerings. Investors should have received it from the issuer."
+                    },
+                    "membershipStatus": {
+                        "type": "string",
+                        "description": "When a subscription to a community offering is accepted, PrimaryBid validates the membership code and returns its status which can be either verified or unverified.",
+                        "enum": [
+                            "verified",
+                            "unverified"
+                        ]
+                    },
+                    "subscriptionCategory": {
+                        "type": "string",
+                        "description": "The type of investment based on the profile of the investor:\n\n● Retail - demand is coming from a private, unqualified investor;\n\n● Professional - demand is coming from a certified investor;\n\n● Institutional - demand is coming from a corporate investor.",
+                        "enum": [
+                            "retail",
+                            "professional",
+                            "ecp/institutional"
+                        ]
+                    },
+                    "accountType": {
+                        "type": "string",
+                        "enum": [
+                            "general_investment",
+                            "tax_efficient"
+                        ],
+                        "description": "The financial account category used to fund this subscription. Can be either a general investment account or a tax-efficient account."
+                    }
+                },
+                "required": [
+                    "subscriptionId",
+                    "offerId",
+                    "amountRequested",
+                    "currency",
+                    "status",
+                    "clientSubscriptionTimestamp"
+                ]
+            },
+            "SubscriptionInput": {
+                "type": "object",
+                "properties": {
+                    "offerId": {
+                        "type": "string",
+                        "description": "Reference to Offer (returned from GET /offer)"
+                    },
+                    "amountRequested": {
+                        "type": "number",
+                        "description": "The cash amount of the subscription requested by the investor in the currency associated with the PrimaryBid API client. This amount should contain no more than 6 decimal places."
+                    },
+                    "subscriptionType": {
+                        "type": "string",
+                        "description": "Describes the type of investment based on the profile of the investor: xo_qualified (Execution-only, qualified investor), xo_unqualified (Execution-only, unqualified investor), discretionary_qualified (Discretionary investment, qualified investor), discretionary_unqualified (Discretionary investment, unqualified investor), institutional (Institutional investor). If neither subscription type or subscription category are provided, then value will default to 'discretionary_qualified'.",
+                        "enum": [
+                            "xo_qualified",
+                            "xo_unqualified",
+                            "discretionary_qualified",
+                            "discretionary_unqualified",
+                            "institutional"
+                        ]
+                    },
+                    "subscriptionCategory": {
+                        "type": "string",
+                        "description": "Describes the type of investment based on the profile of the investor: retail (Execution-only), professional (Professional investment), Institutional (Institutional investor). If neither subscription type or subscription category are provided, then value will default to 'professional'.",
+                        "enum": [
+                            "retail",
+                            "professional",
+                            "ecp/institutional"
+                        ]
+                    },
+                    "clientSubscriptionTimestamp": {
+                        "format": "date-time",
+                        "type": "string",
+                        "description": "The timestamp when the order is received by the API client's client.\n\nUse the ISO 8601 format “1994-11-05T13:15:30Z”, where:\n\n● “T” separates the day (YYYY-MM-DD) from the time (HH:MM:SS).\n\n● ”Z” stands for the UTC standard."
+                    },
+                    "clientSubscriptionReference": {
+                        "type": "string",
+                        "description": "A reference given to PrimaryBid by the API client so that they can tie the subscription back to their records. A unique subscriptionId is additionally generated by PrimaryBid."
+                    },
+                    "investorReferenceType": {
+                        "type": "string",
+                        "description": "Describes the form of the investor reference. nino (National Insurance Number), lei (Legal Entity Identifier), identity_card_number (identification card number), passport_number (passport number), concat (MiFID II investor identifier)",
+                        "enum": [
+                            "nino",
+                            "lei",
+                            "identity_card_number",
+                            "passport_number",
+                            "concat",
+                            "ssn",
+                            "other"
+                        ],
+                        "deprecated": true
+                    },
+                    "investorReference": {
+                        "type": "string",
+                        "description": "Investor reference as per investorReferenceType",
+                        "deprecated": true
+                    },
+                    "isExistingShareholder": {
+                        "type": "boolean",
+                        "description": "Is the investor an existing shareholder?"
+                    },
+                    "numExistingShares": {
+                        "type": "number",
+                        "description": "How many existing shares does the shareholder own?"
+                    },
+                    "isIssuerEmployee": {
+                        "type": "boolean",
+                        "description": "Is the investor an employee of the issuer?"
+                    },
+                    "currency": {
+                        "type": "string",
+                        "description": "The currency of the cash amount of the subscription requested by the investor as per the currency associated with the PrimaryBid API client.",
+                        "enum": [
+                            "GBP",
+                            "EUR",
+                            "USD"
+                        ],
+                        "example": "GBP"
+                    },
+                    "membershipCode": {
+                        "type": "string",
+                        "description": "The access code for community offerings. Investors should have received it from the issuer."
+                    },
+                    "accountType": {
+                        "type": "string",
+                        "description": "The financial account category used to fund this subscription. Can be either a general investment account or a tax-efficient account.",
+                        "enum": [
+                            "general_investment",
+                            "tax_efficient"
+                        ],
+                        "example": "general_investment"
+                    }
+                },
+                "required": [
+                    "offerId",
+                    "amountRequested",
+                    "clientSubscriptionTimestamp",
+                    "currency",
+                    "accountType"
+                ]
+            },
+            "ValidationErrorModel": {
+                "type": "object",
+                "properties": {
+                    "property": {
+                        "type": "string"
+                    },
+                    "messages": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [
+                    "property",
+                    "messages"
+                ]
+            },
+            "ValidationErrorResponseModel": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "number",
+                        "example": 400
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationErrorModel"
+                        }
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Bad Request"
+                    }
+                },
+                "required": [
+                    "status",
+                    "errors",
+                    "message"
+                ]
+            }
+        }
+    },
+    "security": [
+
+        {
+       
+       "primary-bid-api-subscription": [],
+       
+       "primary-bid-api-secret": []
+       
+        }
+       
+        ]
+}
