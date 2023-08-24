@@ -1,0 +1,197 @@
+openapi: 3.0.0
+info:
+  version: '1.0.0'
+  title: HR API...
+  description: Working with YAML OAS imports
+  termsOfService: https://docs.jeffarnim.com/terms
+  contact:
+    name: Jeff Arnim
+    url: https://docs.jeffarnim.com/contact
+  license:
+    name: License Name
+    url: https://docs.jeffarnim.com/license
+servers:
+  - url: https://api.example.com/v1
+    description: Production server
+  - url: https://sandbox-api.example.com/v1
+    description: Sandbox server
+tags:
+  - name: Section 1
+    description: Section 1 description
+  - name: Section 2
+  - name: Section 3
+paths:
+  /consumers/companies:
+    get:
+      tags:
+        - Section 3
+      operationId: getCompaniesByAccountId-updated-slug
+      summary: ''
+      description: Obtem todas as empresas de um usuário final, com os quais o cliente tem o consentimento
+      parameters:
+        - name: companyId
+          required: false
+          in: query
+          description: Lista de ids da empresa para filtro
+          schema:
+            type: array
+            items:
+              type: string
+              example: abc123
+        - name: X-Request-Id
+          required: true
+          in: header
+          schema:
+            type: string
+      responses:
+        200:
+          description: goes here
+      x-readme:
+        explorer-enabled: false
+    post:
+      tags:
+        - Section 3
+      operationId: getCompaniesByAccountId2
+      summary: ''
+      description: Obtem todas as empresas de um usuário final, com os quais o cliente tem o consentimento
+      parameters:
+        - name: companyId
+          required: false
+          in: query
+          description: Lista de ids da empresa para filtro
+          schema:
+            type: array
+            items:
+              type: string
+              example: abc123
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              nullable: true
+      responses:
+        200:
+          description: goes here
+  /employees:
+    get:
+      tags:
+        - Section 1
+      operationId: ListEmployees
+      summary: List employees
+      description: |
+        Obtain employee information...
+
+        - [Link one](https://google.com/)
+        - [Link two](https://google.com/)
+
+        | Left |  Center  | Right |
+        |:-----|:--------:|------:|
+        | L0   | **bold** | $1600 |
+        | L1   |  `code`  |   $12 |
+        | L2   | _italic_ |    $1 |
+      parameters:
+        - name: bodyLimit
+          in: query
+          description: The number of employees returned
+          schema:
+            type: integer
+            minimum: 10
+            maximum: 20
+            example: 15
+        - name: pageLimit
+          in: query
+          description: The number of pages returned
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 5
+            example: 2
+      responses:
+        200:
+          description: (Employee info returned successfully)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employees'
+    post:
+      tags:
+        - Section 1
+      operationId: CreateEmployee
+      summary: Create employee
+      description: |
+        ```
+        {
+          "key": "value"
+        }
+        ```
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/Employee'
+      responses:
+        200:
+          description: New employee created successfully...
+  /employees/{id}:
+    get:
+      tags:
+        - Section 2
+      operationId: EmployeeDetails
+      summary: Employee details
+      description: Obtain information about a specific employee
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Employee ID number
+          schema:
+            type: integer
+            example: 5
+      responses:
+        200:
+          description: Employee details returned successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Employee'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    Employees:
+      description: An array of employee info
+      type: array
+      items:
+        $ref: '#/components/schemas/Employee'
+    Employee:
+      description: Model containing employee info
+      properties:
+        id:
+          type: integer
+          example: 4
+        employeeName:
+          type: object
+          example: Jeff
+        employeeTitle:
+          type: object
+          example: Support Engineer
+        visibleToCustomer:
+          type: string
+          enum: [1,2,3]
+          default: 1
+security:
+  - bearerAuth: []
+    basicAuth: []
+x-readme:
+  explorer-enabled: false
