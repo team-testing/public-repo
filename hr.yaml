@@ -193,5 +193,3 @@ components:
 security:
   - bearerAuth: []
     basicAuth: []
-x-readme:
-  explorer-enabled: false
